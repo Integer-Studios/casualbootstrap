@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameStartScreen : MonoBehaviour {
 
 	public GameObject NewBest;
 	public GameObject PreviousScore;
-	public Text PreviousScoreField;
+	public TextMeshProUGUI PreviousScoreField;
 	public GameObject HighScore;
-	public Text HighScoreField;
-	public Text IGCField;
+	public TextMeshProUGUI HighScoreField;
+	public TextMeshProUGUI IGCField;
 
 	// Use this for initialization
 	void Start () {

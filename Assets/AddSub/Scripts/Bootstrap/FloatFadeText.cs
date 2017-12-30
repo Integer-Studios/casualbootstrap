@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class FloatFadeText : MonoBehaviour {
 
 	public float FadeSpeed = 1f;
 	public float FloatSpeed = 100f;
 
-	private Text _text;
+	private TextMeshProUGUI _text;
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("hi");
-		_text = GetComponent<Text> ();
+		_text = GetComponent<TextMeshProUGUI> ();
 		StartCoroutine(Fade());
 	}
 
@@ -35,7 +35,7 @@ public class FloatFadeText : MonoBehaviour {
 	}
 
 	public void SetText(string s) {
-		_text = GetComponent<Text> ();
+		_text = GetComponent<TextMeshProUGUI> ();
 		_text.text = s;
 	}
 }

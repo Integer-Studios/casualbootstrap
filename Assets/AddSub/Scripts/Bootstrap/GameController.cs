@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameController : MonoBehaviour {
 
 	public static GameController Instance;
 
-	public Text ScoreField;
-	public Text IGCField;
+	public TextMeshProUGUI ScoreField;
+	public TextMeshProUGUI IGCField;
 	public FloatFadeText FloatTextEffectPrefab;
 	public float ScrollMargins;
 
@@ -30,12 +31,6 @@ public class GameController : MonoBehaviour {
 	private void Update() {
 		if (OnHold ())
 			UpdateScroll ();
-
-		if (OnTap ()) {
-			IncrementIGC (1);
-		} else if (Input.GetMouseButtonDown (1)) {
-			EndGame ();
-		}
 	}
 
 	private void UpdateScroll() {
