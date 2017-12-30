@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour {
 
 	public static GameController Instance;
 
-	public GameStartScreen GameStartPrefab;
 	public Text ScoreField;
+	public Text IGCField;
 	public FloatFadeText FloatTextEffectPrefab;
 	public float ScrollMargins;
 
@@ -17,17 +17,25 @@ public class GameController : MonoBehaviour {
 	private float _currentScrollValue;
 	private int _score = 0;
 	private int _scoreMultiplier = 1;
+	private int _igc = 0;
 
 	private void Awake () {
 		if (Instance == null)
 			Instance = this;
 
 		_audio = GetComponent<AudioSource> ();
+		_igc = PlayerPrefs.GetInt ("igc");
 	}
 
 	private void Update() {
 		if (OnHold ())
 			UpdateScroll ();
+
+		if (OnTap ()) {
+			IncrementIGC (1);
+		} else if (Input.GetMouseButtonDown (1)) {
+			EndGame ();
+		}
 	}
 
 	private void UpdateScroll() {
@@ -42,6 +50,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void EndGame() {
+		PlayerPrefs.SetInt ("igc", _igc);
 		GameObject g = new GameObject ("score-data");
 		DontDestroyOnLoad (g);		
 		g.AddComponent<PreviousGameData> ();
@@ -104,9 +113,23 @@ public class GameController : MonoBehaviour {
 		_scoreMultiplier = i;
 	}
 
+	public void SetIGC(int i) {
+		_igc = i;
+		IGCField.text = "" + _igc;
+	}
+
+	public void IncrementIGC(int i) {
+		SetIGC (_igc + i);
+	}
+
+	public int GetIGC() {
+		return _igc;
+	}
+
 	public void FloatTextEffect(string s, Vector3 worldPos) {
 		FloatFadeText f = Instantiate (FloatTextEffectPrefab, transform);
 		f.SetText (s);
 		f.SetWorldPosition (worldPos);
 	}
+
 }

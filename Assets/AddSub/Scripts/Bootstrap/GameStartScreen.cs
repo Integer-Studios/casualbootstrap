@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class GameStartScreen : MonoBehaviour {
 
-	public GameObject NewBestPrefab;
+	public GameObject NewBest;
 	public GameObject PreviousScore;
 	public Text PreviousScoreField;
 	public GameObject HighScore;
 	public Text HighScoreField;
+	public Text IGCField;
 
 	// Use this for initialization
 	void Start () {
@@ -18,16 +19,22 @@ public class GameStartScreen : MonoBehaviour {
 
 		if (data != null) {
 			PreviousScoreField.text = "" + data.Score;
-			if (data.NewBest)
-				Instantiate (NewBestPrefab, transform);
+			if (!data.NewBest)
+				Destroy (NewBest);
 		} else {
 			Destroy (PreviousScore);
+			Destroy (NewBest);
 		}
 
 		if (PlayerPrefs.HasKey ("high-score"))
 			HighScoreField.text = "" + PlayerPrefs.GetInt ("high-score");
 		else
 			Destroy (HighScore);
+
+		if (PlayerPrefs.HasKey ("igc"))
+			IGCField.text = "" + PlayerPrefs.GetInt ("igc");
+		else
+			IGCField.text = "0";
 	}
 	
 	// Update is called once per frame
