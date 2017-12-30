@@ -23,7 +23,6 @@ public class GameController : MonoBehaviour {
 			Instance = this;
 
 		_audio = GetComponent<AudioSource> ();
-		OpenStartScreen ();
 	}
 
 	private void Update() {
@@ -36,11 +35,6 @@ public class GameController : MonoBehaviour {
 		p -= ScrollMargins;
 		p /= (1f - (ScrollMargins * 2));
 		_currentScrollValue = Mathf.Max(Mathf.Min(p, 1.0f), 0.0f);
-	}
-
-	private void OpenStartScreen() {
-		Time.timeScale = 0;
-		Instantiate (GameStartPrefab, transform);
 	}
 
 	public void PlaySound(AudioClip c) {

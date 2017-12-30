@@ -13,6 +13,7 @@ public class GameStartScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 0;
 		PreviousGameData data = FindObjectOfType<PreviousGameData> ();
 
 		if (data != null) {
