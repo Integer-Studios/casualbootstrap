@@ -14,6 +14,13 @@ public class GameController : MonoBehaviour {
 	public FloatFadeText FloatTextEffectPrefab;
 	public float ScrollMargins;
 
+	public GameObject GameStartScreen;
+	public GameObject GameOverScreen;
+	public float MenuFadeSpeed;
+
+	[HideInInspector]
+	public bool IsRunning = false;
+
 	private AudioSource _audio;
 	private float _currentScrollValue;
 	private int _score = 0;
@@ -26,6 +33,15 @@ public class GameController : MonoBehaviour {
 
 		_audio = GetComponent<AudioSource> ();
 		_igc = PlayerPrefs.GetInt ("igc");
+	}
+
+	private void Start() {
+		AutoStart g = FindObjectOfType<AutoStart> ();
+		if (g != null) {
+			Destroy (g.gameObject);
+			GameStartScreen.SetActive (false);
+			StartGame ();
+		}
 	}
 
 	private void Update() {
@@ -46,25 +62,21 @@ public class GameController : MonoBehaviour {
 
 	public void EndGame() {
 		PlayerPrefs.SetInt ("igc", _igc);
-		GameObject g = new GameObject ("score-data");
-		DontDestroyOnLoad (g);		
-		g.AddComponent<PreviousGameData> ();
-		g.GetComponent<PreviousGameData> ().Score = _score;
 
 		if (PlayerPrefs.HasKey ("high-score")) {
 			if (_score > PlayerPrefs.GetInt ("high-score")) {
-				g.GetComponent<PreviousGameData> ().NewBest = true;
 				PlayerPrefs.SetInt ("high-score", _score);
 			}
 		} else {
-			g.GetComponent<PreviousGameData> ().NewBest = true;
 			PlayerPrefs.SetInt ("high-score", _score);
 		}
-		SceneManager.LoadScene ("main", LoadSceneMode.Single);
+		GameOverScreen.SetActive (true);
+
 	}
 
 	public void StartGame() {
-		Time.timeScale = 1;
+		IsRunning = true;
+		Invoke ("EndGame", 1f);
 	}
 
 	public bool IsPlaying() {

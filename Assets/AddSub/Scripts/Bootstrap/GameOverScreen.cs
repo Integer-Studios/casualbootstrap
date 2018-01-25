@@ -1,44 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class GameStartScreen : MonoBehaviour {
+public class GameOverScreen : MonoBehaviour {
 
-	public TextMeshProUGUI HighScoreField;
-	public Animator TapToStart;
+	public TextMeshProUGUI HighScoreField1;
+	public TextMeshProUGUI HighScoreField2;
+	public TextMeshProUGUI PrevScoreField;
 
-	void Start () {
-		TapToStart.SetTrigger ("breath");
-		if (PlayerPrefs.HasKey ("high-score"))
-			HighScoreField.text = "" + PlayerPrefs.GetInt ("high-score");
-		else
-			HighScoreField.text = "0";
-
+	void OnEnable () {
+		if (PlayerPrefs.HasKey ("high-score")) {
+			HighScoreField1.text = "" + PlayerPrefs.GetInt ("high-score");
+			HighScoreField2.text = "BEST " + PlayerPrefs.GetInt ("high-score");
+		} else {
+			HighScoreField1.text = "0";
+			HighScoreField2.text = "BEST 0";
+		}
+		PrevScoreField.text = ""+GameController.Instance.GetScore ();
 		StartCoroutine (Open ());
 	}
 
-	public void BGTap() {
-		StartCoroutine (Startup());
+	public void Restart() {
+		GameObject g = new GameObject ("autostart");
+		DontDestroyOnLoad (g);		
+		g.AddComponent<AutoStart> ();
+		StartCoroutine (Close ());
 	}
 
-	private IEnumerator Startup() {
-		TapToStart.SetTrigger ("shrink");
+	public void Home() {
+		StartCoroutine (Close ());
+	}
+
+	private IEnumerator Close() {
 		Image[] images = GetComponentsInChildren<Image> ();
 		TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI> ();
 		while (images [0].color.a > 0f) {
 			foreach (Image i in images) {
-				if (i.tag != "transparent")
-					i.color -= new Color (0, 0, 0, Time.deltaTime * GameController.Instance.MenuFadeSpeed);
+				i.color -= new Color (0, 0, 0, Time.deltaTime * GameController.Instance.MenuFadeSpeed);
 			}
 			foreach (TextMeshProUGUI t in texts) {
 				t.color -= new Color (0, 0, 0, Time.deltaTime * GameController.Instance.MenuFadeSpeed);
 			}
 			yield return null;
 		}
-		GameController.Instance.StartGame ();
 		Destroy (gameObject);
+		SceneManager.LoadScene ("main", LoadSceneMode.Single);
 	}
 
 	private IEnumerator Open() {
@@ -69,6 +78,5 @@ public class GameStartScreen : MonoBehaviour {
 			i.color = new Color (i.color.r, i.color.g, i.color.b, 1);
 		}
 	}
-
 
 }
