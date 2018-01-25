@@ -89,10 +89,6 @@ public class GameController : MonoBehaviour {
 		IsRunning = true;
 	}
 
-	public bool IsPlaying() {
-		return Time.timeScale > 0f;
-	}
-
 	public bool OnTap() {
 		return Input.GetMouseButtonDown (0);
 	}
