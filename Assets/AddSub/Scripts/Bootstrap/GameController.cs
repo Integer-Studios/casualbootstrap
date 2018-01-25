@@ -87,7 +87,6 @@ public class GameController : MonoBehaviour {
 
 	public void StartGame() {
 		IsRunning = true;
-		Invoke ("EndGame", 1f);
 	}
 
 	public bool IsPlaying() {
