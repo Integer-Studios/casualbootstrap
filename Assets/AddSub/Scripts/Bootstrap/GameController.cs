@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -26,6 +27,7 @@ public class GameController : MonoBehaviour {
 	private int _score = 0;
 	private int _scoreMultiplier = 1;
 	private int _igc = 0;
+	private float _gameSessionLength = 0f;
 
 	private void Awake () {
 		if (Instance == null)
@@ -47,6 +49,8 @@ public class GameController : MonoBehaviour {
 	private void Update() {
 		if (OnHold ())
 			UpdateScroll ();
+
+		_gameSessionLength += Time.deltaTime;
 	}
 
 	private void UpdateScroll() {
@@ -61,6 +65,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void EndGame() {
+
+		Analytics.CustomEvent("GameOver", new Dictionary<string, object>
+			{
+				{  "score", _score },
+				{  "session-length", _gameSessionLength }
+			} );
+
 		PlayerPrefs.SetInt ("igc", _igc);
 
 		if (PlayerPrefs.HasKey ("high-score")) {
