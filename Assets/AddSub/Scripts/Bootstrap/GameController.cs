@@ -10,14 +10,31 @@ public class GameController : MonoBehaviour {
 
 	public static GameController Instance;
 
+	[Header("[Game Name] Settings")]
+
+	[Header("-------------------")]
+
+	[Header("Other")]
+
+	public float ScrollMargins;
+	public float MenuFadeSpeed;
+
+	[Header(" ")]
+
+	[Header("Links (Do Not Touch)")]
+
+	[Header("-------------------")]
+
+
+	[Tooltip("Minimum swipe magnitude to trigger a toss")]
+
 	public TextMeshProUGUI ScoreField;
 	public TextMeshProUGUI IGCField;
 	public FloatFadeText FloatTextEffectPrefab;
-	public float ScrollMargins;
 
 	public GameObject GameStartScreen;
 	public GameObject GameOverScreen;
-	public float MenuFadeSpeed;
+
 
 	[HideInInspector]
 	public bool IsRunning = false;
@@ -65,6 +82,11 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void EndGame() {
+		// end game fx etc
+		Invoke ("EndGameHard", 0.3f);
+	}
+
+	private void EndGameHard() {
 
 		Analytics.CustomEvent("GameOver", new Dictionary<string, object>
 			{
